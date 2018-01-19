@@ -1,0 +1,235 @@
+<html>
+<head>
+	<script src="./js/angular.min.js" ></script>
+	<script src="./js/ui-bootstrap-tpls-2.5.0.min.js" ></script>
+	<script type="text/javascript" src="./js/mockData.js"></script>
+	<script type="text/javascript" src="./js/main.js"></script>
+	<link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body ng-app="wsApp">
+	
+	<sonoma-logo></sonoma-logo>
+	<main-nav></main-nav>
+
+	<div 
+		class="main-container" 
+		ng-controller="mainController as main">
+		
+		<product-component 
+			product-variations="main.productVariations"
+			current-user="main.user"></product-component>
+	
+	</div>
+
+
+
+
+
+
+<!-- Component Templates -->
+	<!-- *using $templateCache so that I can avoid making XHR calls to templateUrls: https://docs.angularjs.org/api/ng/directive/script -->
+
+	<!-- sonoma-logo -->
+	<script type="text/ng-template" id="sonoma-template.html">
+		<div id="logoHeader">
+			<img src="./assets/logo.png">
+		</div>
+	</script>
+
+	<!-- main-nav -->
+	<script type="text/ng-template" id="main-nav.html">
+		<div id="mainNav">
+			<ul class="row">
+				<li 
+					class="reg-nav-item" 
+					ng-repeat="item in $ctrl.navItems">
+						<a href="#">{{item}}</a>
+				</li>
+				<li 
+					class="reg-nav-item main-nav-item">
+						<a href="https://www.williams-sonoma.com">{{$ctrl.homeNavItem}}</a>
+				</li>
+			</ul>
+		</div>
+	</script>
+
+	<!-- product-component -->
+	<script type="text/ng-template" id="product-component.html">
+		<div id="secondary-nav">
+			<bread-crumbs 
+				current-product="$ctrl.currentProduct"></bread-crumbs>
+			<user-cart
+				current-User="$ctrl.currentUser"></user-cart>
+		</div>
+		<div id="product-all-container">
+			<carousel 
+				product-variations="$ctrl.productVariations"
+				current-product="$ctrl.currentProduct"
+				change-product="$ctrl.changeProduct(productId)"></carousel>
+			<product-details
+				product-variations="$ctrl.productVariations"
+				current-product="$ctrl.currentProduct"
+				push-product="$ctrl.pushProduct(productObj)"></product-details>
+		</div>
+	</script>
+
+	<!-- breadcrumbs -->
+	<script type="text/ng-template" id="breadcrumbs.html">
+		<ul id="breadcrumbs-list">
+			<li ng-repeat="crumb in $ctrl.currentProduct.product.breadcrumbs"><a href="#">{{crumb}} </a>  &#62; </li>
+			<li>{{$ctrl.currentProduct.product.title}}</li>
+		</ul>
+	</script>	
+
+	<!-- carousel -->
+	<script type="text/ng-template" id="carousel.html">
+		<div id="carousel-container">
+			<div class="carousel-hero">
+				<img ng-src="{{$ctrl.currentProduct.product.src}}">
+			</div>
+			<div id="carousel-thumbnail-container">
+				<div class="carousel-thumbnail">
+					<div 
+						ng-repeat="variant in $ctrl.productVariations" 
+						class="thumbnail" 
+						ng-click="$ctrl.changeProduct({productId: variant.product.id})">
+						<img 
+							ng-class="{'thumbnail-selected': variant.product.id === $ctrl.currentProduct.product.id}"
+							ng-src="{{variant.product.thumbnail}}">
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<!-- user-cart -->
+	<script type="text/ng-template" id="user-cart.html">
+		<div 
+			id="user-cart-container"
+			ng-mouseover="$ctrl.initCartFloat()">
+			<div ng-class="{'cart-empty': !$ctrl.currentUser.userCart.length, 'cart-full': $ctrl.currentUser.userCart.length}" class="cart-container">
+				<div class="cart-amount">
+					Cart ({{$ctrl.currentUser.userCart.length}})
+				</div> | <div class="cart-checkout">
+					Checkout
+				</div>
+			</div>
+		</div>
+		<div 
+			class="cart-floating-show" 
+			ng-show="$ctrl.showCartFloating"
+			ng-mouseleave="$ctrl.hideCartFloat()">
+			<user-cart-expanded
+				current-User="$ctrl.currentUser"
+				subtotal="$ctrl.subtotal"></user-cart-expanded>
+		</div>
+	</script>
+
+	<!-- user-cart-expanded -->
+	<script type="text/ng-template" id="user-cart-expanded.html">
+		<div class="cart-float-header">
+			{{$ctrl.currentUser.userCart.length}} Item(s) In Your Cart
+		</div>
+		<div class="cart-float-products">
+			<div style="text-align: center" ng-if="!$ctrl.currentUser.userCart.length">
+				<p>Your Cart is currently empty</p>
+			</div>
+			<ul>
+				<li ng-repeat="item in $ctrl.currentUser.userCart">
+					<img ng-src="{{item.product.thumbnail}}">
+					<p>{{item.product.title}}<br><br>
+					QTY:{{item.qty}}</p>
+					<span>{{item.product.price}}</span>
+				</li>
+			</ul>
+		</div>
+		<div class="cart-float-subtotal">
+			<br>
+			<hr>
+			<span>{{$ctrl.subtotal}}</span>
+		</div>
+	</script>
+
+	<!-- product-details -->
+	<script type="text/ng-template" id="product-details.html">
+		<div id="product-details-container">
+			<div class="product-info-container">
+				<div class="product-title">
+					<h1>{{$ctrl.currentProduct.product.title}}</h1>
+				</div>
+				<div class="product-description">
+					<p>{{$ctrl.currentProduct.product.description}}</p>
+				</div>
+				<div class="product-sellingPoints">
+					<ul>
+						<li ng-repeat="sellingPoint in $ctrl.currentProduct.product.sellingPoints">
+							{{sellingPoint}}
+						</li>
+					</ul>
+				</div>
+				<div class="product-cart-related-information">
+					<div class="product-price">
+						<div>${{$ctrl.currentProduct.product.price}}</div>
+					</div>
+					<input 
+						class="product-qty" 
+						type="number" 
+						pattern="[0-9]*" 
+						min="0" 
+						max="99" 
+						maxlength="2" 
+						placeholder="QTY" 
+						ng-model="$ctrl.productToAdd.qty" >
+					<div
+						class="product-cart-addToCart" 
+						ng-click="$ctrl.addToCart()">
+						<img src="./assets/button-add-to-cart.png">
+					</div>
+				</div>
+			</div>
+			<div class="product-expanders">
+				<div class="expander">
+					<div 
+						class="expandable-option"
+						ng-click="$ctrl.activation(1);"
+						ng-class="{'expandable-heading-collapsed': !$ctrl.active1, 'expandable-heading-expanded': $ctrl.active1}">
+							<a><img ng-src="./assets/{{$ctrl.img1}}"> Item 1</a>
+					</div>
+					<div 
+						class="expandable-text"   
+						ng-show="$ctrl.active1">
+							<p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a birdon it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+					</div>
+				</div>
+				<div class="expander">
+					<div 
+						class="expandable-option"
+						ng-click="$ctrl.activation(2);"
+						ng-class="{'expandable-heading-collapsed': !$ctrl.active2, 'expandable-heading-expanded': $ctrl.active2}">
+							<a><img ng-src="./assets/{{$ctrl.img2}}"> Item 2</a>
+					</div>
+					<div 
+						class="expandable-text"  
+						ng-show="$ctrl.active2">
+							<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a birdon it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+					</div>
+				</div>
+				<div class="expander">
+					<div 
+						class="expandable-option"
+						ng-click="$ctrl.activation(3);"
+						ng-class="{'expandable-heading-collapsed': !$ctrl.active3, 'expandable-heading-expanded': $ctrl.active3}">
+							<a><img ng-src="./assets/{{$ctrl.img3}}"> Item 3</a>
+					</div>
+					<div 
+						class="expandable-text"  
+						ng-show="$ctrl.active3">
+							<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a birdon it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>	
+
+</body>
+</html>

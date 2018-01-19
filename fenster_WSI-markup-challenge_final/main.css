@@ -1,0 +1,234 @@
+body{
+	width: 980px;
+	margin: 0 auto;
+}
+a {
+    
+}
+#logoHeader {
+	display: block;
+	text-align: center;
+	width: 100%;
+	margin-top: 30px;
+}
+.main-container {
+	display: block;
+	width: 100%;
+}
+
+/*main-nav*/
+#mainNav {
+	display: block;
+	width: 100%;
+	position: relative;
+    text-align: center;
+}
+.row {
+	margin: 25px auto 0px;
+	text-align: center;
+	padding: 0;
+}
+li.reg-nav-item {
+	background-color: #2d2d2d;
+	display: inline-block;
+	padding: 10px 0;
+}
+li.reg-nav-item a {
+	text-decoration: none;
+	padding: 10px;
+	font-size: 11px;
+	color: white;
+	font-family: Helvetica,Arial,sans-serif;
+}
+li.reg-nav-item a:hover {
+	color: #535353;
+	background-color: #eaeaea;
+}
+li.reg-nav-item :first-child {
+
+}
+li.main-nav-item {
+	background-color: #2d2d2d;
+	margin-left:5px;
+}
+
+/*Breadcrumbs*/
+#breadcrumbs-list {
+	padding-left: 0px;
+	font-size: 12px;
+	margin-bottom: 25px;
+	display: inline-block;
+}
+#breadcrumbs-list li {
+	display: inline-block;
+	padding-left: 5px;
+}
+
+/*Carousel*/
+#carousel-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.carousel-hero {
+	width: 100%;
+}
+#carousel-thumbnail-container {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+.thumbnail {
+	cursor: pointer;
+	display: inline-block;
+	padding: 10px 10px;
+}
+.thumbnail-selected {
+	border: 3px solid #2d2d2d;
+}
+
+
+/*Product Details*/
+#product-all-container{
+	margin-top: 30px;
+	display: flex;
+}
+#product-details-container{
+	display: flex;
+	flex-direction: column;
+	padding: 0 30px;
+}
+.product-info-container {
+	display: block;
+}
+.product-title h1 {
+	margin-top: 0px;
+}
+.product-cart-related-information {
+	padding: 15px;
+}
+.product-cart-addToCart {
+	cursor: pointer;
+}
+input.product-qty {
+	width: 70px;
+    padding: 8px 5px;
+    margin: 6px 0;
+    font-size: 14px;
+    text-align: center;
+}
+.product-price{
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    margin: 5px;
+}
+
+.expandable-text p{
+	padding: 0 20px;
+}
+.expandable-option{
+	cursor: pointer;
+	user-select: none;
+}
+.expandable-option a{
+	font-size: 24px;
+	font-style: bold;
+}
+.expandable-heading-expanded {
+	color: #000000;
+	background-color: #ffffff;
+	border: 1px solid #000000;
+}
+.expandable-heading-collapsed {
+	color: #b9b9b9;
+	background-color: #ffffff;
+}
+
+
+/*User Cart*/
+#secondary-nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 0 10px;
+	height: 38px;
+}
+#user-cart-container {
+	float: right;
+	margin-top: 2px;
+}
+.cart-container{
+	padding: 10px 20px;
+	width: 122px;
+	color: #fff;
+	font-family: Helvetica,Arial,sans-serif;
+	font-size: 12px;
+}
+.cart-container.cart-full{
+	background-color: #e81818;
+}
+.cart-container.cart-empty{
+	background-color: #2d2d2d;
+}
+.cart-amount{
+	display: inline-block;
+	padding-left: 18px;
+	background: url('https://www.williams-sonoma.com/wsimgs/rk/images/i/201803/0006/images/nav/header/cart-icon.png?1516230821') no-repeat 0px 0 ;
+}
+.cart-checkout{
+	display: inline-block;
+}
+.cart-floating-show{
+	background: #fff;
+    border: 1px solid #dadada;
+    box-shadow: 0 3px 9px rgba(0,0,0,0.3);
+    overflow: hidden;
+    text-align: left;
+	z-index: 998;
+    width: 277px;
+    padding: 5px;
+    height: auto;
+    clear:both;
+    position: relative;
+    line-height: 1;
+    text-align: right;
+}
+.cart-floating-hide{
+	display: hide;
+}
+.cart-float-header {
+	background-color: #dadada;
+    border: 1px solid #dadada;
+    padding: 10px;
+    font-size: 14px;
+    height: 14px;
+    text-align: center;
+}
+.cart-float-products ul {
+	list-style: none;
+	width: 100%;
+	padding: 0;
+}
+.cart-float-products ul li img {
+	clear: both;
+}
+.cart-float-products ul li img {
+	float: left;
+	width: 50px;
+}
+.cart-float-products ul li p {
+    width: 200px;
+    text-align: left;
+    margin: 16px 0 0 25px;
+    font-size: 11px;
+    width: 153px;
+    float: left;
+}
+.cart-float-products ul li span {
+	margin-top: 12px;
+    float: right;
+}
+.cart-float-subtotal {
+	clear: both;
+	margin: 0 0 10px;
+}
